@@ -101,11 +101,125 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+          
+# ROUTE PHASE 2
+  /user/accounts:
+    get: 
+      tags:
+        - Accounts and Transactions Module
+      summary: Current User Accounts
+      description: Getting all user number accounts and balance
+      security:
+        - Bearer: []
+      responses: 
+        '200':
+          description: All accounts retrieved successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Account'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+  /accounts/{accountID}/transactions:
+    get:
+      tags:
+        - Accounts and Transactions Module
+      summary: Account transactions
+      description: Getting list of account's transactions
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: accountID
+          description: ID of an account
+          required: true
+          type: string
+      responses:
+        '200':
+          description: All transactions retrieved successfully
+          schema: 
+            type: array
+            items:
+              $ref: '#/definitions/Transactions'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+  /transactions/{transactionID}/category:
+    put:
+      tags:
+        - Accounts and Transactions Module
+      summary: Choose a category of transaction
+      description: Choosing category of transaction
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of a transaction
+          required: true
+          type: string
+        - in: body
+          name: category
+          description: Choose a category of transaction
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionCategory'
+      responses:
+        '200':
+          description: Category added successfully
+          schema: 
+            $ref: '#/definitions/TransactionCategory'
+        '401': 
+          description: Unauthorized user
+        '404':
+          description: Transaction not found
+        '500': 
+          description: Internal Servor Error
+  /transactions/{transactionID}/note:
+    put:
+      tags:
+        - Accounts and Transactions Module
+      summary: Modify transaction note
+      description: Modifying a note of a transaction
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of a transaction
+          required: true
+          type: string
+        - in: body
+          name: note
+          description: Modify transaction's note
+          required: true
+          schema: 
+            $ref: '#/definitions/TransactionNote'
+      responses:
+        '200':
+          description: Note modified successfully
+          schema:
+            $ref: '#/definitions/ModifyTransactionNote'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Transaction not found
+        '500':
+          description: Internal Server Error
 securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
     in: header
+
+# MODELS
 definitions:
   User:
     properties:
@@ -124,6 +238,12 @@ definitions:
       userName:
         type: string
         description: user public name
+    example:
+      email: "jrjaouen29@gmail.com"
+      password: "1"
+      firstName: "jeanrene"
+      lastName: "jaouen"
+      userName: "JR"
   Login:
     properties:
       email:
@@ -132,6 +252,9 @@ definitions:
       password:
         type: string
         description: user password
+    example: 
+        email: "tony@stark.com"
+        password: "password123"
   ApiResponse:
     type: object
     properties:
@@ -146,13 +269,85 @@ definitions:
             type: string
           email:
             type: string
+    example:
+      staus: "200"
+      message: "User successfully created"
+      body:
+        id: "6684022984ab3115843035f0"
+        email: "jrjaouen29@gmail.com"
   LoginResponse:
     type: object
     properties:
       token:
         type: string
+    example:
+      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzE5NDlhNGZhYTZlMzIzMGUzODE0NCIsImlhdCI6MTcxOTkyODY2MywiZXhwIjoxNzIwMDE1MDYzfQ.kjCQvdGuJxa8SPvXwaydI5PIO7JxWCw6z-tnwG4xtLw"
   UserProfile:
     type: object
     properties:
       userName:
         type: string
+    example: 
+      userName: "Iron"
+  Account:
+      type: object
+      properties:
+        accountID:
+          type: string
+          description: account ID
+        accountName:
+          type: string
+          description: account name
+        accountCurrency:
+          type: string
+          description: account currency
+        currentBalance:
+          type: number
+          description: current account balance
+          format: double
+  Transactions:
+    type: object
+    properties:
+      transactionID: 
+        type: string
+        description: transaction ID
+      transactionType:
+        type: string
+        description: type of transaction
+      date:
+        type: string
+        format: date-time
+        description: date of transaction
+      description:
+        type: string
+        description: description of transaction
+      amount:
+        type: number
+        description: transaction amout
+      balance:
+        type: number
+        description: available balance
+        format: double
+      category:
+        type: string
+        description: name of the category
+      note: 
+        type: string
+        description: user note
+  TransactionCategory:
+    type: object
+    properties:
+      category:
+        type: string
+  TransactionNote:
+    type: object
+    properties:
+      note:
+        type: string
+  ModifyTransactionNote:
+    type: object
+    properties:
+      note:
+        type: string
+      noteID:
+        type: string 

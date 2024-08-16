@@ -1,20 +1,46 @@
 import React, {useState} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
+import { getToken, getUserData } from '../../Redux/userSlicer.jsx';
 import './login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);     
-  
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const isLoading = useSelector((state) => state.user.isLoading)
+  const error = useSelector((state) => state.user.error)
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    let credential= {email, password}
+    dispatch(getToken(credential)).then((result) => {
+      if(result.payload) {
+        dispatch(getUserData(result.payload)).then((result) => {
+          if(result.payload) {
+            localStorage.setItem('rememberMe', rememberMe);
+            
+            setEmail('')
+            setPassword('')
+            navigate ('/profile')
+          }
+        })
+      }
+    })
+  }       
+
   return (
-    <>
-    
+    <>    
       <main className="main bg-dark div">
         <section className="sign-in-content">
             <i className="fa fa-user-circle sign-in-icon"></i>
             <h1>Sign In</h1>
-            <form onSubmit>            
+            <form onSubmit={handleSubmit}>
               <div className="input-wrapper">
                 <label htmlFor="email">Email</label>
                 <input type="text" id="email" required value={email} onChange={(e)=>setEmail(e.target.value)}></input>
@@ -26,10 +52,11 @@ function Login() {
               <div className="input-remember">
                 <input type="checkbox" id="remember-me" onChange={()=>setRememberMe(!rememberMe)}></input>
                 <label htmlFor="remember-me">Remember me</label>
-              </div>              
+              </div>
+              {error && <p className="input-error">{error}</p>}
               <button type="submit" className="sign-in-button">
-                Sign In
-              </button> 
+                {isLoading ? "Loading ...":"Sign In"}
+              </button>
             </form>
           </section>
       </main>

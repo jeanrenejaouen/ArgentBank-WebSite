@@ -1,18 +1,25 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import './welcome.css'
 
 function Welcome() {
+
+  const token = useSelector((state) => state.user.token)
+  const firstName = useSelector((state) => token? state.user.firstName : null)
+  const lastName = useSelector((state) => token? state.user.lastName : null)
+  const fullName = firstName + ' ' + lastName + ' !'
   
   const navigate = useNavigate()
 
+
   const handleEditName = () => {
-    navigate('/')
+    navigate('/editUserInfo')
   }
 
   return (
     <div className="header">
-        <h1>Welcome back<br />Tony Jarvis !</h1>
+        <h1>Welcome back<br />{fullName}</h1>
         <button className="edit-button" onClick={handleEditName}>Edit Name</button>
     </div>
   )

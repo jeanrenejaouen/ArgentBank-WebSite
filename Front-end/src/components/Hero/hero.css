@@ -1,6 +1,6 @@
 .hero {
-    background-image: url('../../assets/images/bank-tree.jpeg');
-    /* background-image: url('../../assets/images/bank-tree-400.webp'); */
+    /* background-image: url('../../assets/images/bank-tree.jpeg'); */
+    background-image: url('../../assets/images/bank-tree400.webp');
     background-position: 0 -50px;
     background-size: cover;
     background-repeat: no-repeat;
@@ -30,15 +30,15 @@
   }
   @media (min-width: 600px) {
     .hero {
-      /* background-image: url('../../assets/images/bank-tree-600.webp'); */
-      background-image: url('../../assets/images/bank-tree.jpeg');
+      background-image: url('../../assets/images/bank-tree600.webp');
+      /* background-image: url('../../assets/images/bank-tree.jpeg'); */
     }
   }
 
   @media (min-width: 800px) {
     .hero {
-      /* background-image: url('../../assets/images/bank-tree-800.webp'); */
-      background-image: url('../../assets/images/bank-tree.jpeg');
+      background-image: url('../../assets/images/bank-tree800.webp');
+      /* background-image: url('../../assets/images/bank-tree.jpeg'); */
     }
   }
 
@@ -67,8 +67,8 @@
 
   @media (min-width: 1200px) {
     .hero {
-      /* background-image: url('../../assets/images/bank-tree.webp'); */
-      background-image: url('../../assets/images/bank-tree.jpeg');
+      background-image: url('../../assets/images/bank-tree.webp');
+      /* background-image: url('../../assets/images/bank-tree.jpeg'); */
     }
   }
   .sr-only {

@@ -4,9 +4,9 @@ import Hero from "../../components/Hero/hero.jsx"
 import Feature from "../../components/Feature/feature.jsx"
 
 
-import chat from '../../assets/images/icon-chat.png'
-import money from '../../assets/images/icon-money.png'
-import security from '../../assets/images/icon-security.png'
+import chat from '../../assets/images/icon-chat200.webp'
+import money from '../../assets/images/icon-money200.webp'
+import security from '../../assets/images/icon-security200.webp'
 
 import './home.css';
 
